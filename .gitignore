@@ -6,4 +6,3 @@ npm-debug.*
 .DS_Store
 test-report.xml
 firebase-debug.log
-dist
