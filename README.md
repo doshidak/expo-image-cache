@@ -1,23 +1,42 @@
-# React Native Image Cache and Progressive Loading
+# expo-image-cache
 
+**[doshidak](https://github.com/doshidak)'s fork of [wcandillon/react-native-expo-image-cache](https://github.com/wcandillon/react-native-expo-image-cache)**
 
-[![CircleCI](https://circleci.com/gh/wcandillon/react-native-expo-image-cache.svg?style=svg)](https://circleci.com/gh/wcandillon/react-native-expo-image-cache)
-[![npm version](https://badge.fury.io/js/react-native-expo-image-cache.svg)](https://badge.fury.io/js/react-native-expo-image-cache)
+React Native image cache and progressive loading for iOS and Android. Updated for [**Expo SDK 33**](https://blog.expo.io/expo-sdk-v33-0-0-is-now-available-52d1c99dfe4c).
 
-React Native image cache and progressive loading for iOS and Android. Based on Expo Kit.
+This fork was mainly created to get rid of the following (annoying) deprecation warning:
 
-This is a component used in the [React Native Elements](https://react-native.shop/#elements) and the [React Native Fiber](https://react-native.shop/#fiber) starter kits.
+```
+The following APIs have moved to separate packages and importing them from the "expo" package is deprecated: BlurView, FileSystem.
 
-<img src="https://firebasestorage.googleapis.com/v0/b/react-native-e.appspot.com/o/2018-01-28%2017_36_46.gif?alt=media&token=6afaef74-454d-4c04-85ab-be410d0b225b" />
+1. Add correct versions of these packages to your project using:
 
-Checkout this [medium story about react-native-expo-image-cache](https://medium.com/@wcandillon/5-things-to-know-about-images-react-native-69be41d2a9ee).
+   expo install expo-blur expo-file-system
+
+   If "install" is not recognized as an expo command, update your expo-cli installation.
+
+2. Change your imports so they use specific packages instead of the "expo" package:
+
+ - import { BlurView } from 'expo' -> import { BlurView } from 'expo-blur'
+ - import { FileSystem } from 'expo' -> import * as FileSystem from 'expo-file-system'
+```
+
+This package has been renamed to `expo-image-cache` in order to avoid any potential naming conflicts with `react-native-expo-image-cache` (i.e., the original package name).
+
+**(◕‿◕ ✿)**
 
 ## Installation
 
-This package has a peer dependency with React, React Native, and Expo.
+This package has peer dependencies with React, React Native, and Expo SDK 33.
 
 ```
-yarn add react-native-expo-image-cache
+$ yarn add doshidak/expo-image-cache
+```
+
+Additionally, if you haven't already done so, you will need to install the following:
+
+```
+$ expo install expo-blur expo-file-system
 ```
 
 ## Usage
@@ -26,38 +45,39 @@ yarn add react-native-expo-image-cache
 
 | Props        | Default     | Options  |
 | ------------- |:-------------:| -----:|
-| tint      | dark | light, dark, default |
-| transitionDuration     | 300      | custom in ms |
+| `tint`      | dark | light, dark, default |
+| `transitionDuration`     | 300      | custom in ms |
 
 
-### <Image>
+### `<Image>`
 
 ```js
-import {Image} from "react-native-expo-image-cache";
+import { Image } from 'expo-image-cache';
 
 // preview can be a local image or a data uri
-const preview = { uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" };
-const uri = "https://firebasestorage.googleapis.com/v0/b/react-native-e.appspot.com/o/b47b03a1e22e3f1fd884b5252de1e64a06a14126.png?alt=media&token=d636c423-3d94-440f-90c1-57c4de921641";
+const preview = { uri: 'data:image/png;base64,...' };
+const uri = 'https://.../image.png';
+
 <Image style={{ height: 100, width: 100 }} {...{preview, uri}} />
 ```
 
-### CacheManager
+### `CacheManager`
 
-Get the local image from a remote URI
+Get the local image from a remote URI:
 
 ```js
-import {CacheManager} from "react-native-expo-image-cache";
+import { CacheManager } from 'expo-image-cache';
 
-const {uri} = this.props;
+const { uri } = this.props;
 const path = await CacheManager.get(uri).getPath();
-// if path is undefined, the image download has failed 
+// if path is undefined, the image download has failed
 ```
 
 You can also clear the local cache:
 
 ```js
 
-import {CacheManager} from "react-native-expo-image-cache";
+import { CacheManager } from 'expo-image-cache';
 
 await CacheManager.clearCache();
 ```
