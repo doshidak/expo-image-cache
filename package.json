@@ -1,6 +1,6 @@
 {
-  "name": "react-native-expo-image-cache",
-  "version": "3.2.0",
+  "name": "expo-image-cache",
+  "version": "3.2.1",
   "description": "React Native Image Cache and Progressive Loading based on Expo",
   "main": "dist/src/index.js",
   "files": [
@@ -49,7 +49,9 @@
     "lodash": "^4.17.4"
   },
   "peerDependencies": {
-    "expo": "*",
+    "expo": "^33.0.0",
+    "expo-blur": "^5.0.1",
+    "expo-file-system": "^5.0.1",
     "react": "*",
     "react-native": "*"
   }
