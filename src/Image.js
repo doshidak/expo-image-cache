@@ -21,6 +21,7 @@ type ImageProps = {
   uri: string,
   transitionDuration?: number,
   tint?: 'dark' | 'light',
+  useBlurView?: boolean,
 };
 
 type ImageState = {
@@ -34,6 +35,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   static defaultProps = {
     transitionDuration: 300,
     tint: 'dark',
+    useBlurView: false,
   };
 
   state = {
@@ -73,7 +75,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 
   render(): React.Node {
-    const { preview, style, defaultSource, tint, ...otherProps } = this.props;
+    const { preview, style, defaultSource, tint, useBlurView, ...otherProps } = this.props;
     const { uri, intensity } = this.state;
     const hasDefaultSource = !!defaultSource;
     const hasPreview = !!preview;
@@ -119,11 +121,11 @@ export default class Image extends React.Component<ImageProps, ImageState> {
           />
         }
         {
-          (hasPreview && Platform.OS === 'ios') &&
+          (hasPreview && Platform.OS === 'ios' && useBlurView) &&
           <AnimatedBlurView style={computedStyle} {...{intensity, tint}} />
         }
         {
-          (hasPreview && Platform.OS === 'android') &&
+          (hasPreview && (Platform.OS === 'android' || !useBlurView)) &&
           <Animated.View
             style={[computedStyle, { backgroundColor: tint === 'dark' ? black : white, opacity }]}
           />
