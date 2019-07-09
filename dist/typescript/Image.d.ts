@@ -9,7 +9,6 @@ interface ImageProps {
     uri: string;
     transitionDuration?: number;
     tint?: "dark" | "light";
-    useBlurView?: boolean;
 }
 interface ImageState {
     uri: string | undefined;
@@ -20,16 +19,16 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     static defaultProps: {
         transitionDuration: number;
         tint: string;
-        useBlurView: boolean;
     };
     state: {
         uri: undefined;
         intensity: Animated.Value;
     };
     componentDidMount(): void;
-    componentDidUpdate(prevProps: ImageProps, prevState: ImageState): void;
+    componentDidUpdate(prevProps: ImageProps): void;
     componentWillUnmount(): void;
     load({ uri, options }: ImageProps): Promise<void>;
+    handleLoadEnd(): void;
     render(): JSX.Element;
 }
 export {};

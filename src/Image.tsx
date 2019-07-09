@@ -12,7 +12,7 @@ import {
   ImageSourcePropType,
   StyleProp
 } from "react-native";
-import { BlurView } from "expo-blur";
+// import { BlurView } from "expo-blur";
 
 import CacheManager, { DownloadOptions } from "./CacheManager";
 
@@ -24,7 +24,6 @@ interface ImageProps {
   uri: string;
   transitionDuration?: number;
   tint?: "dark" | "light";
-  useBlurView?: boolean;
 }
 
 interface ImageState {
@@ -37,8 +36,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
 
   static defaultProps = {
     transitionDuration: 300,
-    tint: "dark",
-    useBlurView: false
+    tint: "light"
   };
 
   state = {
@@ -50,17 +48,11 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     this.load(this.props);
   }
 
-  componentDidUpdate(prevProps: ImageProps, prevState: ImageState) {
-    const { preview, transitionDuration, uri: newURI } = this.props;
-    const { uri, intensity } = this.state;
+  componentDidUpdate(prevProps: ImageProps /* , prevState: ImageState */) {
+    const { /* preview, transitionDuration, */ uri: newURI } = this.props;
+    // const { uri, intensity } = this.state;
     if (newURI !== prevProps.uri) {
       this.load(this.props);
-    } else if (uri && prevState.uri === undefined) {
-      Animated.timing(intensity, {
-        duration: transitionDuration,
-        toValue: 0,
-        useNativeDriver: Platform.OS === "android"
-      }).start();
     }
   }
 
@@ -77,13 +69,25 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     }
   }
 
+  handleLoadEnd() {
+    const { transitionDuration } = this.props;
+    const { intensity } = this.state;
+
+    Animated.timing(intensity, {
+      duration: transitionDuration,
+      toValue: 0,
+      useNativeDriver: Platform.OS === "android"
+    }).start();
+  }
+
   render() {
-    const { preview, style, defaultSource, tint, useBlurView, ...otherProps } = this.props;
+    const { preview, style, defaultSource, tint, ...otherProps } = this.props;
     const { uri, intensity } = this.state;
     const isImageReady = !!uri;
     const opacity = intensity.interpolate({
       inputRange: [0, 100],
-      outputRange: [0, 0.5]
+      // outputRange: [0, 0.5]
+      outputRange: [0, 1],
     });
     const flattenedStyle = StyleSheet.flatten(style);
     const computedStyle: StyleProp<ImageStyle> = [
@@ -94,7 +98,13 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     ];
     return (
       <View {...{ style }}>
-        {!!defaultSource && !isImageReady && <RNImage source={defaultSource} style={computedStyle} {...otherProps} />}
+        {!!defaultSource && !isImageReady && (
+          <RNImage
+            source={defaultSource}
+            style={computedStyle}
+            {...otherProps}
+          />
+        )}
         {!!preview && (
           <RNImage
             source={preview}
@@ -103,11 +113,26 @@ export default class Image extends React.Component<ImageProps, ImageState> {
             {...otherProps}
           />
         )}
-        {isImageReady && <RNImage source={{ uri }} style={computedStyle} {...otherProps} />}
-        {Platform.OS === "ios" && useBlurView && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} />}
-        {(Platform.OS === "android" || !useBlurView) && (
+        {
+          isImageReady &&
+          <RNImage
+            source={{ uri }}
+            style={computedStyle}
+            onLoadEnd={() => this.handleLoadEnd()}
+            {...otherProps}
+          />
+        }
+        <Animated.View
+          style={[computedStyle, {
+            backgroundColor: tint === 'dark' ? black : white,
+            opacity,
+            zIndex: 1,
+          }]}
+        />
+        {/* !!preview && Platform.OS === "ios" && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} /> */}
+        {/* (!!preview && Platform.OS === "android") && (
           <Animated.View style={[computedStyle, { backgroundColor: tint === "dark" ? black : white, opacity }]} />
-        )}
+        ) */}
       </View>
     );
   }
@@ -122,4 +147,4 @@ const propsToCopy = [
   "borderTopLeftRadius",
   "borderTopRightRadius"
 ];
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+// const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);

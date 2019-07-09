@@ -21,7 +21,6 @@ type ImageProps = {
   uri: string,
   transitionDuration?: number,
   tint?: 'dark' | 'light',
-  useBlurView?: boolean,
 };
 
 type ImageState = {
@@ -34,8 +33,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
 
   static defaultProps = {
     transitionDuration: 300,
-    tint: 'dark',
-    useBlurView: false,
+    tint: 'light',
   };
 
   state = {
@@ -57,21 +55,26 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 
   componentDidUpdate(prevProps: ImageProps, prevState: ImageState) {
-    const { preview, transitionDuration } = this.props;
-    const { uri, intensity } = this.state;
+    // const { preview, transitionDuration } = this.props;
+    // const { uri, intensity } = this.state;
     if (this.props.uri !== prevProps.uri) {
       this.load(this.props);
-    } else if (uri && !prevState.uri) {
-      Animated.timing(intensity, {
-        duration: transitionDuration,
-        toValue: 0,
-        useNativeDriver: Platform.OS === 'android',
-      }).start();
     }
   }
 
   componentWillUnmount() {
     this.mounted = false;
+  }
+
+  handleLoadEnd() {
+    const { transitionDuration } = this.props;
+    const { intensity } = this.state;
+
+    Animated.timing(intensity, {
+      duration: transitionDuration,
+      toValue: 0,
+      useNativeDriver: Platform.OS === 'android',
+    }).start();
   }
 
   render(): React.Node {
@@ -117,19 +120,27 @@ export default class Image extends React.Component<ImageProps, ImageState> {
           <RNImage
              source={{ uri }}
              style={computedStyle}
+             onLoadEnd={() => this.handleLoadEnd()}
              {...otherProps}
           />
         }
-        {
+        <Animated.View
+          style={[computedStyle, {
+            backgroundColor: tint === 'dark' ? black : white,
+            opacity,
+            zIndex: 1,
+          }]}
+        />
+        {/*
           (Platform.OS === 'ios' && useBlurView) &&
           <AnimatedBlurView style={computedStyle} {...{intensity, tint}} />
-        }
-        {
+        */}
+        {/*
           (Platform.OS === 'android' || !useBlurView) &&
           <Animated.View
             style={[computedStyle, { backgroundColor: tint === 'dark' ? black : white, opacity }]}
           />
-        }
+        */}
       </View>
     );
   }
