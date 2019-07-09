@@ -55,7 +55,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     const { uri, intensity } = this.state;
     if (newURI !== prevProps.uri) {
       this.load(this.props);
-    } else if (uri && preview && prevState.uri === undefined) {
+    } else if (uri && prevState.uri === undefined) {
       Animated.timing(intensity, {
         duration: transitionDuration,
         toValue: 0,
@@ -104,8 +104,8 @@ export default class Image extends React.Component<ImageProps, ImageState> {
           />
         )}
         {isImageReady && <RNImage source={{ uri }} style={computedStyle} {...otherProps} />}
-        {!!preview && Platform.OS === "ios" && useBlurView && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} />}
-        {!!preview && (Platform.OS === "android" || !useBlurView) && (
+        {Platform.OS === "ios" && useBlurView && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} />}
+        {(Platform.OS === "android" || !useBlurView) && (
           <Animated.View style={[computedStyle, { backgroundColor: tint === "dark" ? black : white, opacity }]} />
         )}
       </View>
