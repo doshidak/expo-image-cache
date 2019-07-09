@@ -82,7 +82,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     const isImageReady = !!uri;
     const opacity = intensity.interpolate({
       inputRange: [0, 100],
-      outputRange: [0, 0.5],
+      outputRange: [0, 1],
     });
     const computedStyle = [
       StyleSheet.absoluteFill,
@@ -121,11 +121,11 @@ export default class Image extends React.Component<ImageProps, ImageState> {
           />
         }
         {
-          (hasPreview && Platform.OS === 'ios' && useBlurView) &&
+          (Platform.OS === 'ios' && useBlurView) &&
           <AnimatedBlurView style={computedStyle} {...{intensity, tint}} />
         }
         {
-          (hasPreview && (Platform.OS === 'android' || !useBlurView)) &&
+          ((Platform.OS === 'android' || !useBlurView)) &&
           <Animated.View
             style={[computedStyle, { backgroundColor: tint === 'dark' ? black : white, opacity }]}
           />
