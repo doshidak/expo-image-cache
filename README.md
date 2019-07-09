@@ -45,9 +45,9 @@ $ expo install expo-blur expo-file-system
 
 | Props        | Default     | Options  |
 | ------------- |:-------------:| -----:|
-| `tint`      | dark | light, dark, default |
-| `transitionDuration`     | 300      | custom in ms |
-
+| `tint`      | `'dark'` | `'light'`, `'dark'`, `'default'` |
+| `transitionDuration`     | `300`      | custom in ms |
+| `useBlurView` | `false` | `true` (only on iOS), `false` |
 
 ### `<Image>`
 
