@@ -37,7 +37,6 @@
     "@types/react-native": "^0.57.63",
     "eslint": "^5.16.0",
     "eslint-config-react-native-wcandillon": "^1.2.2",
-    "expo-blur": "~6.0.0",
     "expo-file-system": "~6.0.0"
   },
   "dependencies": {
@@ -45,7 +44,6 @@
     "lodash": "^4.17.4"
   },
   "peerDependencies": {
-    "expo-blur": "*",
     "expo-file-system": "*",
     "react": "*",
     "react-native": "*"
