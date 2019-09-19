@@ -10,7 +10,7 @@ export declare class CacheEntry {
     constructor(uri: string, options: DownloadOptions);
     getPath(): Promise<string | undefined>;
 }
-export default class CacheManager {
+declare class CacheManager {
     static entries: {
         [uri: string]: CacheEntry;
     };
@@ -18,3 +18,4 @@ export default class CacheManager {
     static clearCache(): Promise<void>;
     static getCacheSize(): Promise<number>;
 }
+export default CacheManager;
