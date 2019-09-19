@@ -28,12 +28,13 @@ This package has been renamed to `expo-image-cache` in order to avoid any potent
 
 ### What's Different?
 
-Here are all the differences between the original repository and this fork:
+I made some modifications that best suit my projects, but if you're curious, here are all the differences between the original repository and this fork:
 
 * The package name (`expo-image-cache`), *obviously*.
-* All images fade in once loaded, regardless of the platform.
-  - This means `expo-blur` is not used here, sorry!
+* All images fade-in once loaded, regardless of the platform (essentially `<Image>`'s `fadeDuration` prop, which is only available on Android).
+  - This means `expo-blur` is not used here, sorry! I really wanted the `fadeDuration` on iOS since it looked nice on Android.
   - If you really want the "un-blurring" effect, then use the original repository instead :)
+  - On the flip-side, you don't need to specify the `preview` prop to have this effect, namely on iOS (Android has this enabled by default).
 
 ### (ﾉ◕ヮ◕)ﾉ\*:･ﾟ✧ Enjoy! ✧ﾟ･: \*ヽ(◕ヮ◕ヽ)
 
