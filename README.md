@@ -2,7 +2,7 @@
 
 **[doshidak](https://github.com/doshidak)'s fork of [wcandillon/react-native-expo-image-cache](https://github.com/wcandillon/react-native-expo-image-cache)**
 
-React Native image cache and progressive loading for iOS and Android. Updated for [**Expo SDK 34**](https://blog.expo.io/expo-sdk-34-is-now-available-4f7825239319c).
+React Native image cache and progressive loading for iOS and Android. Updated for [**Expo SDK 34**](https://blog.expo.io/expo-sdk-34-is-now-available-4f7825239319).
 
 This fork was originally created to get rid of the following (annoying) deprecation warning:
 
